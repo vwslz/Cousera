@@ -1,0 +1,14 @@
+.jumbotron {
+    background-color: #027cb0;
+    color: #d7ecf5;
+}
+
+.row-content {
+  padding: 50px 0px 50px 0px;
+  min-height: 400px;
+}
+
+.footer {
+    background: #d7ecf5;
+    padding: 20px 0px 20px 0px;
+}
