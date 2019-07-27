@@ -1,6 +1,6 @@
 ## Welcome to my Coursera projects
 
-###[HTML, CSS, and Javascript for Web Developers](https://www.coursera.org/learn/html-css-javascript-for-web-developers/home/welcome)
+[###HTML, CSS, and Javascript for Web Developers](https://www.coursera.org/learn/html-css-javascript-for-web-developers/home/welcome)
 - [HTML+CSS](https://vwslz.github.io/Cousera/WebDev/mod2-solution/)
 - [BootStrap](https://vwslz.github.io/Cousera/WebDev/mod3-solution/)
 - [JavaScript](https://vwslz.github.io/Cousera/WebDev/mod4-solution/)
