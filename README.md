@@ -8,5 +8,5 @@
 
 
 ###[Front-End Web UI Frameworks and Tools: Bootstrap 4](https://www.coursera.org/learn/bootstrap-4/home/welcome)
-- [BootStrap4 CSS component](https://vwslz.github.io/Cousera/BootStrap4/week1-solution/)
-- [BootStrap4 JS component](https://vwslz.github.io/Cousera/BootStrap4/week2-solution/)
+- [BootStrap4 Grid System](https://vwslz.github.io/Cousera/BootStrap4/week1-solution/)
+- [BootStrap4 CSS component](https://vwslz.github.io/Cousera/BootStrap4/week2-solution/)
