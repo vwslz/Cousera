@@ -47,7 +47,7 @@ Factorial_func <- function(x) {
 # Memorization #
 ################
 
-fac_tbl <- c(1, rep(NA, 23))
+fac_tbl <- c(1, rep(NA, 10))
 Factorial_mem <- function(x) {
   stopifnot(x >= 0)
   if (x == 0) {
@@ -79,9 +79,9 @@ toPlot <- function(data) {
   data
 }
 
-###############
-# Performance #
-###############
+########
+# Plot #
+########
 
 library(purrr)
 library(microbenchmark)
@@ -111,7 +111,7 @@ Factorial_mem_data <- toPlot(Factorial_mem_data)
 
 Factorial_loop_data
 Factorial_reduce_data
-Factorial_reduce_data
+Factorial_func_data
 Factorial_mem_data
 
 plot(1:10, Factorial_loop_data$med_time, xlab = "Factorial", ylab = "Median Time (Nanoseconds)",
@@ -127,4 +127,22 @@ points(1:10 + .1, Factorial_mem_data$med_time, col = "yellow", pch = 18)
 lines(1:10 + .1, Factorial_mem_data$med_time, col = "yellow", lty = 3)
 legend(1, 150000, c("Loop", "Reduce", "Recursion", "Memoized"), pch = 18, 
        col = c("black", "blue", "red", "yellow"), bty = "n", cex = 1, y.intersp = 1.5)
+
+###############
+# Performance #
+###############
+
+Comparision <- function(x) {
+  microbenchmark(
+    Factorial_loop(x), 
+    Factorial_reduce(x), 
+    Factorial_func(x), 
+    Factorial_mem(x), 
+    times = 100
+  )
+}
+
+for (x in c(10,100,1000)) {
+  print(Comparision(x))
+}
 

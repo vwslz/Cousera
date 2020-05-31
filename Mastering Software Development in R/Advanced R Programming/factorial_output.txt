@@ -1,153 +1,18 @@
-> Factorial_loop <- function(x) {
-+   stopifnot(x >= 0)
-+   res <- 1
-+   if (x > 0) {
-+     for (fac in seq(1, x, by = 1)) {
-+       res <- res * fac
-+     }
-+   }
-+   res
-+ }
-> Factorial_reduce <- function(x) {
-+   stopifnot(x >= 0)
-+   if (x == 0) {
-+     1
-+   }
-+   else {
-+     reduce(seq(1, x, by = 1), function(x, y){
-+       x * y
-+     })
-+   }
-+ }
-> Factorial_func <- function(x) {
-+   stopifnot(x >= 0)
-+   if (x == 0) {
-+     1
-+   }
-+   else {
-+     x * Factorial_func(x - 1)
-+   }
-+ }
-> fac_tbl <- c(1, rep(NA, 23))
-> Factorial_mem <- function(x) {
-+   stopifnot(x >= 0)
-+   if (x == 0) {
-+     1
-+   }
-+   else {
-+     if(!is.na(fac_tbl[x])){
-+       fac_tbl[x]
-+     } else {
-+       fac_tbl[x - 1] <<- Factorial_mem(x - 1)
-+       fac_tbl[x - 1] * x
-+     }
-+   }
-+ }
-> toPlot <- function(data) {
-+   names(data) <- paste0(letters[1:10], 1:10)
-+   data <- as.data.frame(data)
-+   
-+   data %<>%
-+     gather(num, time) %>%
-+     group_by(num) %>%
-+     summarise(med_time = median(time))
-+   
-+   data
-+ }
-> library(purrr)
-
-Attaching package: ‘purrr’
-
-The following object is masked from ‘package:magrittr’:
-
-    set_names
-
-> library(microbenchmark)
-> library(tidyr)
-> library(magrittr)
-> library(dplyr)
-> Factorial_loop_data <- map(1:10, function(x){
-+   microbenchmark(Factorial_loop(x), times = 100)$time
-+ })
-> Factorial_loop_data <- toPlot(Factorial_loop_data)
-> Factorial_reduce_data <- map(1:10, function(x){
-+   microbenchmark(Factorial_reduce(x), times = 100)$time
-+ })
-> Factorial_reduce_data <- toPlot(Factorial_reduce_data)
-> Factorial_func_data <- map(1:10, function(x){
-+   microbenchmark(Factorial_func(x), times = 100)$time
-+ })
-> Factorial_func_data <- toPlot(Factorial_func_data)
-> Factorial_mem_data <- map(1:10, function(x){
-+   microbenchmark(Factorial_mem(x), times = 100)$time
-+ })
-> Factorial_mem_data <- toPlot(Factorial_mem_data)
-> Factorial_loop_data
-# A tibble: 10 x 2
-   num   med_time
-   <chr>    <dbl>
- 1 a1       17100
- 2 b2       28850
- 3 c3       28600
- 4 d4       34500
- 5 e5       28900
- 6 f6       30050
- 7 g7       33800
- 8 h8       29650
- 9 i9       28900
-10 j10      35100
-> Factorial_reduce_data
-# A tibble: 10 x 2
-   num   med_time
-   <chr>    <dbl>
- 1 a1       82550
- 2 b2      129200
- 3 c3      103000
- 4 d4       93650
- 5 e5       97350
- 6 f6      102000
- 7 g7      116100
- 8 h8       91850
- 9 i9      108300
-10 j10     115600
-> Factorial_reduce_data
-# A tibble: 10 x 2
-   num   med_time
-   <chr>    <dbl>
- 1 a1       82550
- 2 b2      129200
- 3 c3      103000
- 4 d4       93650
- 5 e5       97350
- 6 f6      102000
- 7 g7      116100
- 8 h8       91850
- 9 i9      108300
-10 j10     115600
-> Factorial_mem_data
-# A tibble: 10 x 2
-   num   med_time
-   <chr>    <dbl>
- 1 a1        5300
- 2 b2       11200
- 3 c3       11400
- 4 d4       16100
- 5 e5       18700
- 6 f6       16600
- 7 g7        9800
- 8 h8       10900
- 9 i9       10400
-10 j10      11800
-> plot(1:10, Factorial_loop_data$med_time, xlab = "Factorial", ylab = "Median Time (Nanoseconds)",
-+      pch = 18, bty = "n", xaxt = "n", yaxt = "n", ylim=c(0,150000))
-> axis(1, at = 1:10)
-> axis(2, at = seq(0, 150000, by = 10000))
-> lines(1:10 + .1, Factorial_loop_data$med_time, col = "black", lty=3)
-> points(1:10 + .1, Factorial_reduce_data$med_time, col = "blue", pch = 18)
-> lines(1:10 + .1, Factorial_reduce_data$med_time, col = "blue", lty=3)
-> points(1:10 + .1, Factorial_func_data$med_time, col = "red", pch = 18)
-> lines(1:10 + .1, Factorial_func_data$med_time, col = "red", lty = 3)
-> points(1:10 + .1, Factorial_mem_data$med_time, col = "yellow", pch = 18)
-> lines(1:10 + .1, Factorial_mem_data$med_time, col = "yellow", lty = 3)
-> legend(1, 150000, c("Loop", "Reduce", "Recursion", "Memoized"), pch = 18, 
-+        col = c("black", "blue", "red", "yellow"), bty = "n", cex = 1, y.intersp = 1.5)
+Unit: microseconds
+                expr   min     lq    mean median     uq   max neval
+   Factorial_loop(x)  30.4  31.85  34.996  33.70  35.10  54.3   100
+ Factorial_reduce(x) 116.7 119.85 134.382 121.65 146.25 268.5   100
+   Factorial_func(x)  38.7  39.30  41.604  40.60  42.35  55.2   100
+    Factorial_mem(x)   4.0   4.40   5.782   5.30   6.15  43.5   100
+Unit: microseconds
+                expr   min     lq    mean median     uq   max neval
+   Factorial_loop(x)  29.6  37.65  46.560  42.80  51.00 241.7   100
+ Factorial_reduce(x) 272.7 307.00 337.743 326.15 376.60 511.0   100
+   Factorial_func(x) 312.6 342.30 389.653 371.35 437.40 828.1   100
+    Factorial_mem(x)   3.4   5.10   6.062   5.85   6.95  11.5   100
+Unit: microseconds
+                expr    min      lq     mean  median      uq     max neval
+   Factorial_loop(x)   62.6   80.65  105.486  101.10  124.70   220.6   100
+ Factorial_reduce(x) 1941.7 2232.55 2572.043 2448.15 2714.85  4501.1   100
+   Factorial_func(x) 3635.0 4281.10 5137.166 4509.35 4964.65 17052.5   100
+    Factorial_mem(x)    7.2   12.20   21.072   19.30   23.40    92.1   100
